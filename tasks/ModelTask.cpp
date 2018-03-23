@@ -244,7 +244,11 @@ void ModelTask::updateModelPose(base::Time const& time)
 {
     Pose3d model2world = GzGetIgn((*model), WorldPose, ());
     Vector3d model2world_angular_vel = GzGetIgn((*model), RelativeAngularVel, ());
-    Vector3d model2world_vel = GzGetIgn((*model), WorldLinearVel, ());
+    Vector3d model2world_vel;
+    if(_model_frame.get() == _world_frame.get())
+        model2world_vel = GzGetIgn((*model), RelativeLinearVel, ());
+    else
+        model2world_vel = GzGetIgn((*model), WorldLinearVel, ());
 
     RigidBodyState rbs;
     rbs.invalidate();
